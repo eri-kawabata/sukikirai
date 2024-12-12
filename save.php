@@ -1,19 +1,16 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $category = $data['category'] ?? '';
-    $level = $data['level'] ?? '';
-
-    if ($category && $level) {
+    if (isset($data['category'], $data['level']) && is_string($data['category']) && is_numeric($data['level'])) {
         $entry = [
-            'category' => $category,
-            'level' => $level,
+            'category' => htmlspecialchars($data['category'], ENT_QUOTES, 'UTF-8'),
+            'level' => intval($data['level']),
             'timestamp' => time()
         ];
         file_put_contents('data.json', json_encode($entry) . PHP_EOL, FILE_APPEND);
-        echo json_encode(['status' => 'success', 'data' => $entry]); // デバッグ用
+        echo json_encode(['status' => 'success', 'data' => $entry]);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid input format']);
     }
 }
 

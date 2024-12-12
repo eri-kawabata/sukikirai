@@ -18,17 +18,20 @@ const categories = [
     { name: "車", image: "./image/car.png" }
 ];
 
+const videos = {
+    "動物": "https://www.youtube.com/embed/example1",
+    "恐竜": "https://www.youtube.com/embed/example2",
+    "昆虫": "https://www.youtube.com/embed/example3"
+    // 他のカテゴリを追加
+};
+
 let currentIndex = 0;
 let resultData = [];
 
 // 通知バナーの表示
 function showNotification(message, level) {
     const notification = document.getElementById("notification");
-    const colors = {
-        1: "#f8f4c8",
-        2: "#c8f8dc",
-        3: "#f8c8dc"
-    };
+    const colors = { 1: "#f8f4c8", 2: "#c8f8dc", 3: "#f8c8dc" };
     notification.style.backgroundColor = colors[level] || "#4caf50";
     notification.innerText = message;
     notification.classList.remove("hide");
@@ -51,7 +54,7 @@ function loadImage() {
         img.style.display = "block";
     } else {
         img.style.display = "none";
-        showResults();
+        showRecommendations();
     }
 }
 
@@ -90,37 +93,34 @@ function saveToResults(category, level) {
     resultData.push({ ...categoryData, level });
 }
 
-// シャボン玉のような結果表示
-function showResults() {
-    const bubbleContainer = document.getElementById("bubble-container");
+// おすすめ動画を表示
+function showRecommendations() {
+    const videoCardsContainer = document.getElementById("video-cards");
 
-    // コンテナをクリア
-    bubbleContainer.innerHTML = "";
+    const lovedCategories = resultData.filter((item) => item.level === 3);
+    if (lovedCategories.length === 0) {
+        videoCardsContainer.innerHTML = `<p>おすすめ動画が見つかりませんでした。</p>`;
+        return;
+    }
 
-    resultData.forEach((item) => {
-        const bubble = document.createElement("div");
-        bubble.classList.add("bubble");
-        bubble.style.backgroundImage = `url(${item.image})`;
+    lovedCategories.forEach((item) => {
+        const videoUrl = videos[item.name];
+        if (!videoUrl) return;
 
-        // サイズ設定
-        const sizes = {
-            1: "50px",  // 普通
-            2: "100px", // 好き
-            3: "150px"  // 大好き
-        };
-        bubble.style.width = sizes[item.level];
-        bubble.style.height = sizes[item.level];
+        const videoCard = document.createElement("div");
+        videoCard.classList.add("video-card");
 
-        // ランダムな位置とアニメーション時間
-        const duration = Math.random() * 5 + 5; // 5〜10秒
-        bubble.style.animationDuration = `${duration}s`;
-        bubble.style.left = `${Math.random() * 100}vw`;
+        videoCard.innerHTML = `
+            <iframe src="${videoUrl}" allowfullscreen></iframe>
+            <div class="video-info">
+                <h3>${item.name}のおすすめ動画</h3>
+            </div>
+        `;
 
-        bubbleContainer.appendChild(bubble);
+        videoCardsContainer.appendChild(videoCard);
     });
 }
 
 // 初期化
 loadImage();
 setupDragAndDrop();
-
