@@ -16,7 +16,7 @@ const categories = [
     { name: "クッキング", image: "./image/cooking.png" },
     { name: "電車", image: "./image/train.png" },
     { name: "飛行機", image: "./image/plane.png" },
-    { name: "車", image: "./image/car.png" }
+    { name: "車", image: "./image/car.png" },
 ];
 
 let currentIndex = 0;
@@ -33,11 +33,14 @@ async function fetchVideos(categoryName) {
     toggleLoadingSpinner(true); // ローディングスピナーを表示
     try {
         const response = await fetch(`./fetch_videos.php?q=${encodeURIComponent(categoryName)}`);
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.statusText}`);
+        }
         const data = await response.json();
         toggleLoadingSpinner(false); // ローディングスピナーを非表示
         return data.items.map((item) => ({
             title: item.snippet.title,
-            videoId: item.id.videoId
+            videoId: item.id.videoId,
         }));
     } catch (error) {
         toggleLoadingSpinner(false);
@@ -49,21 +52,29 @@ async function fetchVideos(categoryName) {
 // おすすめ動画の表示
 async function showRecommendations() {
     const videoCardsContainer = document.getElementById("video-cards");
+    const recommendedVideosSection = document.getElementById("recommended-videos");
+
+    // セクションを非表示に初期化
+    recommendedVideosSection.classList.remove("show");
     videoCardsContainer.innerHTML = ""; // 前の結果をクリア
 
     const lovedCategories = resultData.filter((item) => item.level === 3);
 
     if (lovedCategories.length === 0) {
         videoCardsContainer.innerHTML = `<p>おすすめ動画が見つかりませんでした。</p>`;
+        recommendedVideosSection.classList.add("show"); // フェードイン表示
         return;
     }
 
     for (const item of lovedCategories) {
         const videos = await fetchVideos(item.name); // カテゴリに対応する動画を取得
 
-        videos.forEach((video) => {
+        videos.forEach((video, index) => {
             const videoCard = document.createElement("div");
             videoCard.classList.add("video-card");
+
+            // スライドインアニメーションを追加
+            videoCard.style.animationDelay = `${index * 0.2}s`;
 
             videoCard.innerHTML = `
                 <iframe 
@@ -78,6 +89,9 @@ async function showRecommendations() {
             videoCardsContainer.appendChild(videoCard);
         });
     }
+
+    // セクションをフェードイン表示
+    recommendedVideosSection.classList.add("show");
 }
 
 // 通知バナーの表示
