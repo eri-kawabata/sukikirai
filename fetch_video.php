@@ -17,13 +17,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         // YouTube APIにリクエストを送信
         $response = file_get_contents($url);
-        // 成功したらそのまま返す
+
+        // レスポンスが空の場合
+        if ($response === false) {
+            throw new Exception('Failed to fetch data from YouTube API.');
+        }
+
+        // JSONとして返す
+        header('Content-Type: application/json');
         echo $response;
     } catch (Exception $e) {
         // エラーが発生した場合にエラーメッセージを返す
-        echo json_encode(['status' => 'error', 'message' => 'Failed to fetch videos']);
+        header('Content-Type: application/json', true, 500);
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 } else {
     // GET以外のリクエストはエラーを返す
+    header('Content-Type: application/json', true, 405);
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
+

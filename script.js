@@ -45,6 +45,7 @@ async function fetchVideos(categoryName) {
     } catch (error) {
         toggleLoadingSpinner(false);
         console.error("YouTube API Error:", error);
+        alert(`動画の取得に失敗しました: ${error.message}`);
         return [];
     }
 }

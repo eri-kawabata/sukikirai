@@ -1,5 +1,5 @@
 <?php
 // config.php
 return [
-    'YOUTUBE_API_KEY' => 'AIzaSyAtUOEbuIHUdIl4_hbLG4qsbFfjdkimzHI', // 実際のAPIキーを設定
+    'YOUTUBE_API_KEY' => 'AIzaSyBN2uGVfobBWkX0z3YyucsQMLYUmSNynEY', // 実際のAPIキーを設定
 ];
