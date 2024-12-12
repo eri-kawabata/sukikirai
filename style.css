@@ -1,0 +1,136 @@
+/* 全体スタイル */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #f8f4c8, #c8f8dc);
+    overflow: hidden;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+/* メインエリア */
+#app {
+    margin-top: 20px;
+}
+
+#image-area {
+    margin: 20px auto;
+    width: 300px;
+    height: 300px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#random-image {
+    max-width: 100%;
+    max-height: 100%;
+    transition: opacity 0.3s;
+}
+
+/* 振り分けゾーン */
+#zones {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.zone {
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.zone.dragover {
+    transform: scale(1.1);
+    background-color: #ffe8a1;
+}
+
+#love-zone {
+    background-color: #f8c8dc;
+}
+
+#like-zone {
+    background-color: #c8f8dc;
+}
+
+#neutral-zone {
+    background-color: #f8f4c8;
+}
+
+/* シャボン玉用バブルコンテナ */
+#bubble-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* バブルアニメーション */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+    background-size: cover;
+    background-position: center;
+}
+
+/* バブルの浮遊アニメーション */
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-10%);
+        opacity: 0;
+    }
+}
+
+/* 通知バナー */
+#notification {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#notification.show {
+    display: block;
+    opacity: 1;
+}
+
+#notification.hide {
+    opacity: 0;
+}

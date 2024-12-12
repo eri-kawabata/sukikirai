@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>振り分け結果</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <h1>好きなものを教えて！</h1>
+    <div id="notification"></div>
+
+    <div id="app">
+        <div id="image-area">
+            <img id="random-image" src="" alt="ランダム画像">
+        </div>
+        <div id="zones">
+            <div id="love-zone" class="zone" data-level="3">大好き</div>
+            <div id="like-zone" class="zone" data-level="2">好き</div>
+            <div id="neutral-zone" class="zone" data-level="1">普通</div>
+        </div>
+    </div>
+
+    <div id="bubble-container"></div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
