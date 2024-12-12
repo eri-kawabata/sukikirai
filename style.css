@@ -10,7 +10,7 @@ body {
 }
 
 h1 {
-    margin-top: 60px;
+    margin-top: 20px;
     font-size: 2.8rem;
     color: #d35d90;
     text-shadow: 0 2px 4px rgba(211, 93, 144, 0.5);
@@ -20,7 +20,6 @@ h2 {
     margin-top: 30px;
     font-size: 2.2rem;
     color: #5c85a1;
-    /* アクセントカラー: ライトブルー */
     text-shadow: 0 1px 3px rgba(92, 133, 161, 0.4);
 }
 
@@ -70,11 +69,15 @@ h2 {
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    animation: float 3s ease-in-out infinite;
+    /* ゾーンが浮遊するようなアニメーション */
 }
 
 .zone:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: glow 1s ease-in-out infinite;
+    /* ホバー時に光の効果 */
 }
 
 /* ゾーンごとの色 */
@@ -82,21 +85,48 @@ h2 {
     background: #ffd9e8;
     color: #b63866;
     border: 3px solid #b63866;
-    /* アクセントカラー追加 */
 }
 
 #like-zone {
     background: #e3f7ff;
     color: #3d85a4;
     border: 3px solid #3d85a4;
-    /* アクセントカラー追加 */
 }
 
 #neutral-zone {
     background: #f5fffa;
     color: #5ca176;
     border: 3px solid #5ca176;
-    /* アクセントカラー追加 */
+}
+
+/* 浮遊アニメーション */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* ホバー時の光るアニメーション */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
 }
 
 /* おすすめ動画セクション */
@@ -124,7 +154,6 @@ h2 {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     border: 2px solid #5ca176;
-    /* ホバー時にアクセントカラーを適用 */
 }
 
 .video-card iframe {
@@ -147,7 +176,6 @@ h2 {
     height: 50px;
     border: 5px solid rgba(0, 0, 0, 0.1);
     border-top: 5px solid #5ca176;
-    /* アクセントカラー: ミントグリーン */
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -169,7 +197,6 @@ h2 {
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(to right, #ffe6f0, #e3f7ff);
-    /* ペールピンクとライトブルーのグラデーション */
     color: #333333;
     padding: 10px 20px;
     border-radius: 12px;
