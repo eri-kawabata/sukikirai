@@ -1,3 +1,4 @@
+// カテゴリデータ
 const categories = [
     { name: "動物", image: "./image/animals.png" },
     { name: "恐竜", image: "./image/dinosaur.png" },
@@ -18,15 +19,66 @@ const categories = [
     { name: "車", image: "./image/car.png" }
 ];
 
-const videos = {
-    "動物": "https://www.youtube.com/embed/example1",
-    "恐竜": "https://www.youtube.com/embed/example2",
-    "昆虫": "https://www.youtube.com/embed/example3"
-    // 他のカテゴリを追加
-};
-
 let currentIndex = 0;
 let resultData = [];
+
+// ローディングスピナーの表示/非表示
+function toggleLoadingSpinner(show) {
+    const spinner = document.getElementById("loading-spinner");
+    spinner.style.display = show ? "block" : "none";
+}
+
+// YouTube APIから動画を取得
+async function fetchVideos(categoryName) {
+    toggleLoadingSpinner(true); // ローディングスピナーを表示
+    try {
+        const response = await fetch(`./fetch_videos.php?q=${encodeURIComponent(categoryName)}`);
+        const data = await response.json();
+        toggleLoadingSpinner(false); // ローディングスピナーを非表示
+        return data.items.map((item) => ({
+            title: item.snippet.title,
+            videoId: item.id.videoId
+        }));
+    } catch (error) {
+        toggleLoadingSpinner(false);
+        console.error("YouTube API Error:", error);
+        return [];
+    }
+}
+
+// おすすめ動画の表示
+async function showRecommendations() {
+    const videoCardsContainer = document.getElementById("video-cards");
+    videoCardsContainer.innerHTML = ""; // 前の結果をクリア
+
+    const lovedCategories = resultData.filter((item) => item.level === 3);
+
+    if (lovedCategories.length === 0) {
+        videoCardsContainer.innerHTML = `<p>おすすめ動画が見つかりませんでした。</p>`;
+        return;
+    }
+
+    for (const item of lovedCategories) {
+        const videos = await fetchVideos(item.name); // カテゴリに対応する動画を取得
+
+        videos.forEach((video) => {
+            const videoCard = document.createElement("div");
+            videoCard.classList.add("video-card");
+
+            videoCard.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/${video.videoId}" 
+                    allowfullscreen>
+                </iframe>
+                <div class="video-info">
+                    <h3>${video.title}</h3>
+                </div>
+            `;
+
+            videoCardsContainer.appendChild(videoCard);
+        });
+    }
+}
 
 // 通知バナーの表示
 function showNotification(message, level) {
@@ -54,11 +106,11 @@ function loadImage() {
         img.style.display = "block";
     } else {
         img.style.display = "none";
-        showRecommendations();
+        showRecommendations(); // すべてのカテゴリが評価された後におすすめを表示
     }
 }
 
-// ドラッグ＆ドロップ機能を設定
+// ドラッグ＆ドロップのセットアップ
 function setupDragAndDrop() {
     const img = document.getElementById("random-image");
     img.draggable = true;
@@ -67,15 +119,10 @@ function setupDragAndDrop() {
         event.dataTransfer.setData("text/plain", img.dataset.category);
     });
 
-    const zones = document.querySelectorAll(".zone");
-    zones.forEach((zone) => {
-        zone.addEventListener("dragover", (event) => {
-            event.preventDefault();
-        });
-
+    document.querySelectorAll(".zone").forEach((zone) => {
+        zone.addEventListener("dragover", (event) => event.preventDefault());
         zone.addEventListener("drop", (event) => {
             event.preventDefault();
-
             const category = event.dataTransfer.getData("text/plain");
             const level = zone.dataset.level;
 
@@ -87,40 +134,12 @@ function setupDragAndDrop() {
     });
 }
 
-// 振り分け結果を保存
+// 結果を保存
 function saveToResults(category, level) {
     const categoryData = categories.find((cat) => cat.name === category);
     resultData.push({ ...categoryData, level });
 }
 
-// おすすめ動画を表示
-function showRecommendations() {
-    const videoCardsContainer = document.getElementById("video-cards");
-
-    const lovedCategories = resultData.filter((item) => item.level === 3);
-    if (lovedCategories.length === 0) {
-        videoCardsContainer.innerHTML = `<p>おすすめ動画が見つかりませんでした。</p>`;
-        return;
-    }
-
-    lovedCategories.forEach((item) => {
-        const videoUrl = videos[item.name];
-        if (!videoUrl) return;
-
-        const videoCard = document.createElement("div");
-        videoCard.classList.add("video-card");
-
-        videoCard.innerHTML = `
-            <iframe src="${videoUrl}" allowfullscreen></iframe>
-            <div class="video-info">
-                <h3>${item.name}のおすすめ動画</h3>
-            </div>
-        `;
-
-        videoCardsContainer.appendChild(videoCard);
-    });
-}
-
-// 初期化
+// 初期化処理
 loadImage();
 setupDragAndDrop();

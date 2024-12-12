@@ -1,19 +1,26 @@
-/* 全体スタイル */
+/* 全体のスタイル */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     text-align: center;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, #f8f4c8, #c8f8dc);
-    overflow: hidden;
+    background: linear-gradient(to bottom, #ffe6f0, #ffffff);
+    color: #333333;
+    overflow-x: hidden;
 }
 
 h1 {
     margin-top: 20px;
+    font-size: 2.5rem;
+    color: #d35d90;
+    text-shadow: 0 2px 4px rgba(211, 93, 144, 0.5);
 }
 
 h2 {
-    margin-top: 40px;
+    margin-top: 30px;
+    font-size: 2rem;
+    color: #a15c78;
+    text-shadow: 0 1px 3px rgba(161, 92, 120, 0.4);
 }
 
 /* メインエリア */
@@ -23,21 +30,24 @@ h2 {
 
 #image-area {
     margin: 20px auto;
-    width: 300px;
-    height: 300px;
-    border: 2px dashed #ccc;
+    width: 280px;
+    height: 280px;
+    border: 2px solid #f4d8e5;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #fffafc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 #random-image {
     max-width: 100%;
     max-height: 100%;
-    transition: opacity 0.3s;
+    transition: transform 0.3s, opacity 0.3s;
 }
 
-/* 振り分けゾーン */
+/* ゾーンのデザイン */
 #zones {
     display: flex;
     justify-content: center;
@@ -46,40 +56,45 @@ h2 {
 }
 
 .zone {
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    text-align: center;
-    width: 100px;
-    height: 100px;
-    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    border: 3px solid #f4d8e5;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s, background-color 0.2s;
+    background: #fff0f5;
+    color: #333333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.zone.dragover {
+.zone:hover {
     transform: scale(1.1);
-    background-color: #ffe8a1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* ゾーンごとの色 */
 #love-zone {
-    background-color: #f8c8dc;
+    background: #ffd9e8;
+    color: #b63866;
 }
 
 #like-zone {
-    background-color: #c8f8dc;
+    background: #ffe6f7;
+    color: #996089;
 }
 
 #neutral-zone {
-    background-color: #f8f4c8;
+    background: #fff7fb;
+    color: #8b8b8b;
 }
 
-/* おすすめ動画カード */
+/* おすすめ動画セクション */
 #recommended-videos {
-    margin-top: 50px;
-    text-align: center;
+    margin-top: 40px;
 }
 
 #video-cards {
@@ -91,26 +106,50 @@ h2 {
 
 .video-card {
     width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
     overflow: hidden;
-    text-align: left;
+    background: #fffafa;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.video-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .video-card iframe {
     width: 100%;
-    height: 200px;
+    height: 170px;
     border: none;
 }
 
-.video-card .video-info {
-    padding: 10px;
+.video-card h3 {
+    margin: 10px;
+    font-size: 1rem;
+    color: #333333;
 }
 
-.video-card .video-info h3 {
-    font-size: 16px;
-    margin: 10px 0;
+/* ローディングスピナー */
+#loading-spinner {
+    display: none;
+    margin: 20px auto;
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid #d35d90;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 通知バナー */
@@ -119,30 +158,15 @@ h2 {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #4caf50;
-    color: white;
+    background: #ffd9e8;
+    color: #333333;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 12px;
     font-size: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     display: none;
-    z-index: 1000;
-    transition: opacity 0.5s ease-in-out;
 }
 
 #notification.show {
     display: block;
-    opacity: 1;
-}
-
-#notification.hide {
-    opacity: 0;
-}
-
-/* レスポンシブ */
-@media (max-width: 600px) {
-    .video-card {
-        width: 100%;
-        margin: 10px 0;
-    }
 }

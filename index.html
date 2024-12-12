@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おすすめ動画</title>
+    <title>好きなものを教えて！/おすすめの動画を提案</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -17,15 +17,16 @@
             <img id="random-image" src="" alt="ランダム画像">
         </div>
         <div id="zones">
-            <div id="love-zone" class="zone" data-level="3">大好き</div>
-            <div id="like-zone" class="zone" data-level="2">好き</div>
-            <div id="neutral-zone" class="zone" data-level="1">普通</div>
+            <div id="love-zone" class="zone neon" data-level="3">大好き</div>
+            <div id="like-zone" class="zone neon" data-level="2">好き</div>
+            <div id="neutral-zone" class="zone neon" data-level="1">普通</div>
         </div>
     </div>
 
     <div id="recommended-videos">
         <h2>おすすめ動画</h2>
         <div id="video-cards"></div>
+        <div id="loading-spinner"></div>
     </div>
 
     <script src="./script.js"></script>
